@@ -7,9 +7,11 @@
     
     class InfoBeamer {
         private static $token;
+	private static $key;
         
-        public function __construct($accesstoken) {
-            self::$token = $accesstoken;
+        public function __construct($accesstoken,$apikey) {
+		self::$token = $accesstoken;
+		self::$key = $apikey;
             $this->files = new Files();
         }
 
@@ -19,7 +21,7 @@
         public static function postRequest($endpoint,$header,$body) {
 			$client = new Guzzle();
         	$res = $client->request('POST', $endpoint, [
-					'headers' => ['Content-type' => $header],
+					'headers' => ['Content-type' => $header, 'X-Api-Key'=> self::$key],
     				'auth' => ['', self::$token],
     				'body' => $body
     				
@@ -38,6 +40,7 @@
         public static function postMultiRequest($endpoint,$multipart) {
 			$client = new Guzzle();
         	$res = $client->request('POST', $endpoint, [
+		'headers' => ['X-Api-Key' => self::$key],
         	'auth' => ['', self::$token],
    			'multipart' => $multipart
 				]);
@@ -57,6 +60,7 @@
         public static function postFormRequest($endpoint,$form_params) {
 			$client = new Guzzle();
         	$res = $client->request('POST', $endpoint, [
+		'headers' => ['X-Api-Key' => self::$key],
         	'auth' => ['', self::$token],
    			'form_params' => $form_params
 				]);
@@ -74,7 +78,7 @@
         public static function getRequest($endpoint) {
             $client = new Guzzle();
 			$res = $client->request('GET', $endpoint, [
-					'headers' => ['Content-type' => 'application/json'],
+					'headers' => ['Content-type' => 'application/json', 'X-Api-Key' => self::$key],
     				'auth' => ['', self::$token]
 					]);
 
@@ -89,7 +93,7 @@
         public static function deleteRequest($endpoint) {
             $client = new Guzzle();
 			$res = $client->request('DELETE', $endpoint, [
-					'headers' => ['Content-type' => 'application/json'],
+					'headers' => ['Content-type' => 'application/json', 'X-Api-Key' => self::$key],
     				'auth' => ['', self::$token]
 					]);
 
@@ -100,10 +104,11 @@
         }
         
         /*
-        * Updates the access token.
+        * Updates the access
         */
-        public function updateAccessToken($accesstoken) {
-            self::$token = $accesstoken;
+        public function updateAccess($accesstoken,$apikey) {
+		self::$token = $accesstoken;
+		self::$key = $apikey;
         }
     }
 
