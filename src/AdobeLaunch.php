@@ -5,7 +5,7 @@
     use \GuzzleHttp\Client as Guzzle;
     use AdobeLaunch\AdobeLaunch\Files;
     
-    class InfoBeamer {
+    class AdobeLaunch {
         private static $token;
 	private static $key;
         
